@@ -47,7 +47,7 @@ def IndexCreate(dname, idx_type,
 ###############################################################################
 # search closest vector for all languages pairs and calculate error rate
 
-def IndexSearchMultiple(data, idx, verbose=False):
+def IndexSearchMultiple(data, idx, langs=["lang_1", "lang_2"], verbose=False):
     nl = len(data)
     nbex = data[0].shape[0]
     err = np.zeros((nl, nl)).astype(float)
@@ -62,9 +62,9 @@ def IndexSearchMultiple(data, idx, verbose=False):
                     = (nbex - np.equal(I.reshape(nbex), ref)
                        .astype(int).sum()) / nbex
                 if verbose:
-                    print(' - similarity error {:s}/{:s}: {:5d}={:5.2f}%'
-                          .format(args.langs[i1], args.langs[i2],
-                                  err[i1, i2], 100.0 * err[i1, i2]))
+                    print(' - similarity error {}=>{} {:5.2f}%'
+                          .format(langs[i1], langs[i2],
+                                  100.0 * err[i1, i2]))
     return err
 
 

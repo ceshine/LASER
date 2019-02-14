@@ -17,7 +17,6 @@
 import os
 import sys
 import argparse
-from transliterate import translit, get_available_language_codes
 
 parser = argparse.ArgumentParser(
     formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -45,6 +44,7 @@ args = parser.parse_args()
 
 for line in args.input:
     if args.language != "none":
+        from transliterate import translit
         line = translit(line, args.language, reversed=True)
     if not args.preserve_case:
         line = line.lower()

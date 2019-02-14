@@ -50,16 +50,16 @@ def TokenLine(line, lang='en', lower_case=True, romanize=False):
     assert lower_case, 'lower case is needed by all the models'
     roman = lang if romanize else 'none'
     tok = check_output(
-            REM_NON_PRINT_CHAR
-            + '|' + NORM_PUNC + lang
-            + '|' + DESCAPE
-            + '|' + MOSES_TOKENIZER + lang
-            + ('| python3 -m jieba -d ' if lang == 'zh' else '')
-            + ('|' + MECAB + '/bin/mecab -O wakati -b 50000 ' if lang == 'ja' else '')
-            + '|' + ROMAN_LC + roman,
-            input=line,
-            encoding='UTF-8',
-            shell=True)
+        REM_NON_PRINT_CHAR
+        + '|' + NORM_PUNC + lang
+        + '|' + DESCAPE
+        + '|' + MOSES_TOKENIZER + lang
+        + ('| python3 -m jieba -d ' if lang == 'zh' else '')
+        + ('|' + MECAB + '/bin/mecab -O wakati -b 50000 ' if lang == 'ja' else '')
+        + '|' + ROMAN_LC + roman,
+        input=line,
+        encoding='UTF-8',
+        shell=True)
     return tok.strip()
 
 
@@ -88,17 +88,18 @@ def Token(inp_fname, out_fname, lang='en',
                           '(gzip)' if gzip else '',
                           '(de-escaped)' if descape else '',
                           '(romanized)' if romanize else ''))
-        run(cat + inp_fname
-            + '|' + REM_NON_PRINT_CHAR
-            + '|' + NORM_PUNC + lang
-            + ('|' + DESCAPE if descape else '')
-            + '|' + MOSES_TOKENIZER + lang
-            + ('| python3 -m jieba -d ' if lang == 'zh' else '')
-            + ('|' + MECAB + '/bin/mecab -O wakati -b 50000 ' if lang == 'ja' else '')
-            + '|' + ROMAN_LC + roman
-            + '>' + out_fname,
-            env=dict(os.environ, LD_LIBRARY_PATH=MECAB + '/lib'),
-            shell=True)
+        assert run(cat + inp_fname
+                   + '|' + REM_NON_PRINT_CHAR
+                   + '|' + NORM_PUNC + lang
+                   + ('|' + DESCAPE if descape else '')
+                   + '|' + MOSES_TOKENIZER + lang
+                   + ('| python3 -m jieba -d ' if lang == 'zh' else '')
+                   + ('|' + MECAB +
+                      '/bin/mecab -O wakati -b 50000 ' if lang == 'ja' else '')
+                   + '|' + ROMAN_LC + roman
+                   + '>' + out_fname,
+                   env=dict(os.environ, LD_LIBRARY_PATH=MECAB + '/lib'),
+                   shell=True, check=True)
     elif not over_write and verbose:
         print(' - Tokenizer: {} exists already'
               .format(os.path.basename(out_fname), lang))
@@ -144,7 +145,7 @@ def BPEfastApply(inp_fname, out_fname, bpe_codes,
         run(FASTBPE + ' applybpe '
             + out_fname + ' ' + inp_fname
             + ' ' + bpe_codes
-            + ' ' + bpe_vocab, shell=True, stderr=DEVNULL)
+            + ' ' + bpe_vocab, shell=True, stderr=DEVNULL, check=True)
     elif not over_write and verbose:
         print(' - fast BPE: {} exists already'
               .format(os.path.basename(out_fname)))
