@@ -40,10 +40,5 @@ COPY . /src
 RUN sudo chown -R $USERNAME /src
 WORKDIR /src
 
-# RUN conda install -y cython jupyter && \
-#     conda clean -tipsy
 RUN bash ./install_models.sh
 RUN bash ./install_external_tools.sh
-
-RUN echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
-    echo "conda activate base" >> ~/.bashrc
