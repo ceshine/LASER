@@ -98,7 +98,7 @@ def IndexCreate(dname, idx_type,
 ###############################################################################
 # search closest vector for all languages pairs and calculate error rate
 
-def IndexSearchMultiple(data, idx, verbose=False, texts=None, print_errors=False):
+def IndexSearchMultiple(data, idx, verbose=False, langs=["lang_1", "lang_2"], texts=None, print_errors=False):
     nl = len(data)
     nbex = data[0].shape[0]
     err = np.zeros((nl, nl)).astype(float)
