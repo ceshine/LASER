@@ -9,3 +9,6 @@ tasks/similarity/dev/
 tasks/xnli/XNLI-1.0*
 tasks/xnli/multinli_1.0*
 .??*swp
+.mypy_cache
+notebooks/cache
+notebooks/.ipynb_checkpoints/
